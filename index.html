@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Score Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 950px;
+            padding: 15px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h2>Team Score Progression</h2>
+        <canvas id="teamScoreChart"></canvas>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('teamScoreChart').getContext('2d');
+            
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [1, 2, 3, 4, 5, 6, 7, 8],
+                    datasets: [
+                        {
+                            label: 'You Will Never Find Brian Here',
+                            data: [12, 32, 41, 65, 84, 100, 103, 117],
+                            borderColor: '#000000',
+                            backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                            tension: 0.1,
+                            borderWidth: 3
+                        },
+                        {
+                            label: 'NAC Breda 1912',
+                            data: [9, 29, 46, 65, 79, 93, 101, 115],
+                            borderColor: '#F7FF00',
+                            backgroundColor: 'rgba(247, 255, 0, 0.1)',
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Keymasters',
+                            data: [9, 30, 39, 61, 73, 90, 100, 108],
+                            borderColor: '#ED0101',
+                            backgroundColor: 'rgba(237, 1, 1, 0.1)',
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Toasty Town',
+                            data: [12, 29, 38, 53, 65, 83, 94, 105],
+                            borderColor: '#12A0D7',
+                            backgroundColor: 'rgba(18, 160, 215, 0.1)',
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Het Flevoslot',
+                            data: [9, 25, 39, 54, 67, 81, 89, 103],
+                            borderColor: '#EEAA00',
+                            backgroundColor: 'rgba(238, 170, 0, 0.1)',
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Maid\'n Atletic',
+                            data: [8, 29, 38, 53, 70, 84, 92, 101],
+                            borderColor: '#0035C2',
+                            backgroundColor: 'rgba(0, 53, 194, 0.1)',
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Walburg',
+                            data: [13, 27, 27, 27, 27, 27, 27, 27],
+                            borderColor: '#FFE249',
+                            backgroundColor: 'rgba(255, 226, 73, 0.1)',
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Team Score Progression',
+                            font: {
+                                size: 18,
+                                weight: 'bold'
+                            }
+                        },
+                        subtitle: {
+                            display: true,
+                            text: 'Cumulative points across 8 rounds',
+                            padding: {
+                                bottom: 10
+                            }
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Round'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Cumulative Points'
+                            },
+                            min: 0,
+                            max: 120
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
