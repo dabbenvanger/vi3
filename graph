@@ -1,0 +1,351 @@
+<!-- Load React, ReactDOM, and Recharts from CDN -->
+<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/recharts@2.1.14/umd/Recharts.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<!-- Container for the chart -->
+<div id="team-score-chart" style="width: 100%; height: 600px;"></div>
+
+<!-- Chart code (as a Babel script) -->
+<script type="text/babel">
+  // Access Recharts components
+  const {
+    LineChart, Line, XAxis, YAxis, CartesianGrid, 
+    Tooltip, Legend, ResponsiveContainer, Label
+  } = Recharts;
+
+  // Create the React component
+  const ScoreChart = () => {
+    // Data representing the score progression for each team across 8 rounds
+    const data = [
+      {
+        round: 1,
+        "You Will Never Find Brian Here": 12,
+        "NAC Breda 1912": 9,
+        "Keymasters": 9,
+        "Toasty Town": 12,
+        "Het Flevoslot": 9,
+        "Maid'n Atletic": 8,
+        "Walburg": 13
+      },
+      {
+        round: 2,
+        "You Will Never Find Brian Here": 32,
+        "NAC Breda 1912": 29,
+        "Keymasters": 30,
+        "Toasty Town": 29,
+        "Het Flevoslot": 25,
+        "Maid'n Atletic": 29,
+        "Walburg": 27
+      },
+      {
+        round: 3,
+        "You Will Never Find Brian Here": 41,
+        "NAC Breda 1912": 46,
+        "Keymasters": 39,
+        "Toasty Town": 38,
+        "Het Flevoslot": 39,
+        "Maid'n Atletic": 38,
+        "Walburg": 27
+      },
+      {
+        round: 4,
+        "You Will Never Find Brian Here": 65,
+        "NAC Breda 1912": 65,
+        "Keymasters": 61,
+        "Toasty Town": 53,
+        "Het Flevoslot": 54,
+        "Maid'n Atletic": 53,
+        "Walburg": 27
+      },
+      {
+        round: 5,
+        "You Will Never Find Brian Here": 84,
+        "NAC Breda 1912": 79,
+        "Keymasters": 73,
+        "Toasty Town": 65,
+        "Het Flevoslot": 67,
+        "Maid'n Atletic": 70,
+        "Walburg": 27
+      },
+      {
+        round: 6,
+        "You Will Never Find Brian Here": 100,
+        "NAC Breda 1912": 93,
+        "Keymasters": 90,
+        "Toasty Town": 83,
+        "Het Flevoslot": 81,
+        "Maid'n Atletic": 84,
+        "Walburg": 27
+      },
+      {
+        round: 7,
+        "You Will Never Find Brian Here": 103,
+        "NAC Breda 1912": 101,
+        "Keymasters": 100,
+        "Toasty Town": 94,
+        "Het Flevoslot": 89,
+        "Maid'n Atletic": 92,
+        "Walburg": 27
+      },
+      {
+        round: 8,
+        "You Will Never Find Brian Here": 117,
+        "NAC Breda 1912": 115,
+        "Keymasters": 108,
+        "Toasty Town": 105,
+        "Het Flevoslot": 103,
+        "Maid'n Atletic": 101,
+        "Walburg": 27
+      }
+    ];
+
+    // Define colors for each team based on the Excel file
+    const teamColors = {
+      "You Will Never Find Brian Here": "#000000", // Black
+      "NAC Breda 1912": "#F7FF00", // Yellow
+      "Keymasters": "#ED0101", // Red
+      "Toasty Town": "#12A0D7", // Blue
+      "Het Flevoslot": "#EEAA00", // Orange
+      "Maid'n Atletic": "#0035C2", // Dark Blue
+      "Walburg": "#FFE249" // Light Yellow
+    };
+
+    // Get all team names
+    const teamNames = Object.keys(data[0]).filter(key => key !== 'round');
+
+    // Calculate team rankings for the leaderboard
+    const finalRankings = teamNames
+      .map(team => ({ 
+        name: team, 
+        score: data[data.length-1][team],
+        color: teamColors[team]
+      }))
+      .sort((a, b) => b.score - a.score);
+
+    // Custom tooltip component with styling
+    const CustomTooltip = ({ active, payload, label }) => {
+      if (active && payload && payload.length) {
+        return (
+          <div style={{
+            backgroundColor: "white",
+            padding: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "5px"
+          }}>
+            <div style={{
+              fontWeight: "bold",
+              borderBottom: "1px solid #eee",
+              marginBottom: "5px",
+              paddingBottom: "5px"
+            }}>Round {label}</div>
+            {payload.map((entry, index) => (
+              <div key={`item-${index}`} style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: "3px"
+              }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: entry.color,
+                    borderRadius: "50%",
+                    marginRight: "5px"
+                  }} />
+                  <span>{entry.name}: </span>
+                </div>
+                <span style={{ 
+                  fontWeight: "bold",
+                  color: entry.color,
+                  marginLeft: "10px"
+                }}>
+                  {entry.value} pts
+                </span>
+              </div>
+            ))}
+          </div>
+        );
+      }
+      return null;
+    };
+
+    return (
+      <div style={{
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#f9fafb",
+        padding: "20px",
+        borderRadius: "10px",
+        boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
+      }}>
+        <div style={{
+          marginBottom: "20px",
+          textAlign: "center"
+        }}>
+          <h2 style={{
+            fontSize: "1.5rem",
+            fontWeight: "bold",
+            margin: "0 0 5px 0"
+          }}>Team Score Progression</h2>
+          <p style={{
+            color: "#6b7280",
+            margin: "0"
+          }}>Cumulative points across 8 rounds</p>
+        </div>
+
+        <div style={{
+          display: "flex",
+          flexDirection: window.innerWidth < 768 ? "column" : "row",
+          gap: "20px"
+        }}>
+          <div style={{
+            flex: "1",
+            backgroundColor: "white",
+            padding: "15px",
+            borderRadius: "8px",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+          }}>
+            <ResponsiveContainer width="100%" height={400}>
+              <LineChart
+                data={data}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 20,
+                  bottom: 20,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis 
+                  dataKey="round" 
+                  tick={{ fill: '#6b7280' }}
+                >
+                  <Label 
+                    value="Round" 
+                    position="insideBottom" 
+                    offset={-15}
+                  />
+                </XAxis>
+                <YAxis 
+                  tick={{ fill: '#6b7280' }}
+                  domain={[0, 120]}
+                >
+                  <Label 
+                    value="Cumulative Points" 
+                    position="insideLeft" 
+                    angle={-90}
+                    style={{ textAnchor: 'middle' }}
+                    offset={-5}
+                  />
+                </YAxis>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend />
+                
+                {teamNames.map((team) => (
+                  <Line
+                    key={team}
+                    type="monotone"
+                    dataKey={team}
+                    name={team}
+                    stroke={teamColors[team]}
+                    strokeWidth={team === "You Will Never Find Brian Here" ? 3 : 2}
+                    dot={{ 
+                      r: 4, 
+                      strokeWidth: 2,
+                      fill: '#fff',
+                      stroke: teamColors[team]
+                    }}
+                    activeDot={{ 
+                      r: 8, 
+                      strokeWidth: 0,
+                      fill: teamColors[team]
+                    }}
+                  />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+          
+          <div style={{
+            width: window.innerWidth < 768 ? "100%" : "250px",
+            backgroundColor: "white",
+            padding: "15px",
+            borderRadius: "8px",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+          }}>
+            <h3 style={{
+              fontSize: "1.2rem",
+              fontWeight: "bold",
+              marginTop: "0",
+              marginBottom: "15px",
+              paddingBottom: "10px",
+              borderBottom: "1px solid #eee"
+            }}>Final Standings</h3>
+            
+            <div>
+              {finalRankings.map((team, index) => (
+                <div 
+                  key={team.name} 
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "8px 5px",
+                    borderBottom: index < finalRankings.length - 1 ? "1px solid #f0f0f0" : "none"
+                  }}
+                >
+                  <div style={{
+                    width: "24px",
+                    height: "24px",
+                    borderRadius: "50%",
+                    backgroundColor: "#f3f4f6",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: "bold",
+                    fontSize: "0.875rem",
+                    marginRight: "10px"
+                  }}>
+                    {index + 1}
+                  </div>
+                  
+                  <div style={{
+                    width: "12px",
+                    height: "12px",
+                    borderRadius: "50%",
+                    backgroundColor: team.color,
+                    marginRight: "10px"
+                  }} />
+                  
+                  <div style={{
+                    flex: "1",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis"
+                  }}>
+                    {team.name}
+                  </div>
+                  
+                  <div style={{
+                    fontWeight: "bold",
+                    marginLeft: "10px"
+                  }}>
+                    {team.score}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Render the component to the DOM
+  ReactDOM.render(
+    <ScoreChart />,
+    document.getElementById('team-score-chart')
+  );
+</script>
