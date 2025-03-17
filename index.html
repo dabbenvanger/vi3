@@ -1,140 +1,483 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Score Chart</title>
+    <title>Team Score Progressie</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9fafb;
+            background-color: #FBFAF3; /* Warme crème/beige achtergrond */
+        }
+        .dashboard {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FBFAF3; /* Achtergrond van dashboard ook aangepast */
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            font-size: 28px;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: #6b7280;
+            margin: 0;
+            font-size: 16px;
+        }
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
         }
         .chart-container {
-            width: 100%;
-            max-width: 950px;
-            padding: 15px;
-            margin: 0 auto;
+            flex: 1;
+            min-width: 650px;
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            height: 500px; /* Standaard hoogte */
         }
-        h2 {
-            text-align: center;
+        .leaderboard {
+            width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .leaderboard h2 {
+            font-size: 20px;
+            color: #1f2937;
             margin-top: 0;
-            color: #333;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .team-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 12px;
+            color: #4b5563;
+        }
+        .team-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+        .team-name {
+            flex: 1;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #374151;
+        }
+        .team-score {
+            font-weight: bold;
+            font-size: 16px;
+            color: #111827;
+        }
+        .top-teams .rank {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .top-teams:first-child .rank {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 2px solid #f59e0b;
+        }
+        .custom-tooltip {
+            background-color: #f1f5f9; /* Zeer lichte grijstint voor achtergrond */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            color: #334155; /* Donkere tekst voor lichte achtergrond */
+        }
+        .tooltip-title {
+            font-weight: bold;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #cbd5e1; /* Lichte scheidingslijn */
+            font-size: 14px;
+            color: #1e293b; /* Donkere tekst voor titel */
+        }
+        .tooltip-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .tooltip-team {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: #475569; /* Donkere grijstint voor teamnaam */
+        }
+        .tooltip-color {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .tooltip-score {
+            font-weight: bold;
+            margin-left: 12px;
+            font-size: 13px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        @media (max-width: 1000px) {
+            .content {
+                flex-direction: column;
+            }
+            .chart-container, .leaderboard {
+                width: 100%;
+                min-width: 0;
+            }
+            /* Grafiek veel hoger maken op mobiele apparaten */
+            .chart-container {
+                height: 70vh !important; /* 70% van de viewport hoogte gebruiken */
+                min-height: 650px !important; /* Minimaal 650px hoog */
+            }
+            /* Tussenstand minder laten inspringen */
+            .team-name {
+                max-width: 85%;
+            }
+            .team-item {
+                justify-content: space-between;
+                padding-right: 5px;
+            }
+        }
+        @media (max-width: 600px) {
+            /* Extra aanpassingen voor zeer kleine schermen */
+            .dashboard {
+                padding: 10px;
+            }
+            .team-item {
+                padding: 8px 5px 8px 0;
+            }
+            .team-score {
+                min-width: 30px;
+                text-align: right;
+            }
+            .rank {
+                margin-right: 8px;
+            }
+            .team-color {
+                margin-right: 6px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="chart-container">
-        <h2>Team Score Progression</h2>
-        <canvas id="teamScoreChart"></canvas>
+    <div class="dashboard">
+        <div class="header">
+            <h1>Team Score Progressie</h1>
+            <p>Cumulatieve punten over 8 rondes</p>
+        </div>
+        
+        <div class="content">
+            <div class="chart-container" id="chartContainer">
+                <canvas id="teamScoreChart"></canvas>
+            </div>
+            
+            <div class="leaderboard">
+                <h2>Tussenstand</h2>
+                <div id="rankings"></div>
+            </div>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('teamScoreChart').getContext('2d');
+            // Zorgen dat de grafiek goed schaalt op mobiel
+            function adjustChartSize() {
+                const chartContainer = document.getElementById('chartContainer');
+                if (window.innerWidth <= 1000) {
+                    // Forceer een grote hoogte op mobiel
+                    chartContainer.style.height = Math.max(650, window.innerHeight * 0.7) + 'px';
+                }
+            }
             
+            // Direct uitvoeren en bij resizing
+            adjustChartSize();
+            window.addEventListener('resize', adjustChartSize);
+            // Team data with scores and colors
+            const teamData = [
+                {
+                    name: "You Will Never Find Brian Here",
+                    color: "#000000",
+                    scores: [12, 32, 41, 65, 84, 100, 103, 117]
+                },
+                {
+                    name: "NAC Breda 1912",
+                    color: "#F7FF00", // Originele gele kleur behouden
+                    scores: [9, 29, 46, 65, 79, 93, 101, 115]
+                },
+                {
+                    name: "Keymasters",
+                    color: "#ED0101",
+                    scores: [9, 30, 39, 61, 73, 90, 100, 108]
+                },
+                {
+                    name: "Toasty Town",
+                    color: "#12A0D7",
+                    scores: [12, 29, 38, 53, 65, 83, 94, 105]
+                },
+                {
+                    name: "Het Flevoslot",
+                    color: "#EEAA00",
+                    scores: [9, 25, 39, 54, 67, 81, 89, 103]
+                },
+                {
+                    name: "Maid'n Atletic",
+                    color: "#0035C2",
+                    scores: [8, 29, 38, 53, 70, 84, 92, 101]
+                },
+                {
+                    name: "Walburg",
+                    color: "#FFE249",
+                    scores: [13, 27, 27, 27, 27, 27, 27, 27]
+                }
+            ];
+            
+            // Sort teams by final score for rankings
+            const rankedTeams = [...teamData].sort((a, b) => 
+                b.scores[b.scores.length - 1] - a.scores[a.scores.length - 1]
+            );
+            
+            // Generate rankings HTML
+            const rankingsContainer = document.getElementById('rankings');
+            rankedTeams.forEach((team, index) => {
+                const teamItem = document.createElement('div');
+                teamItem.className = `team-item ${index < 3 ? 'top-teams' : ''}`;
+                
+                teamItem.innerHTML = `
+                    <div class="rank">${index + 1}</div>
+                    <div class="team-color" style="background-color: ${team.color}"></div>
+                    <div class="team-name" title="${team.name}">${team.name}</div>
+                    <div class="team-score">${team.scores[team.scores.length - 1]}</div>
+                `;
+                
+                rankingsContainer.appendChild(teamItem);
+            });
+            
+            // Prepare chart data
+            const rounds = [1, 2, 3, 4, 5, 6, 7, 8];
+            const datasets = teamData.map(team => ({
+                label: team.name,
+                data: team.scores,
+                borderColor: team.color,
+                backgroundColor: adjustOpacity(team.color, 0.1),
+                tension: 0.1,
+                borderWidth: team.name === "You Will Never Find Brian Here" ? 3 : 2,
+                pointBackgroundColor: '#FFFFFF',
+                pointBorderColor: team.color,
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 7,
+                pointHoverBackgroundColor: team.color,
+                pointHoverBorderColor: '#FFFFFF'
+            }));
+            
+            // Custom tooltip
+            const customTooltip = {
+                enabled: false,
+                external: function(context) {
+                    // Tooltip Element
+                    let tooltipEl = document.getElementById('chartjs-tooltip');
+
+                    // Create element on first render
+                    if (!tooltipEl) {
+                        tooltipEl = document.createElement('div');
+                        tooltipEl.id = 'chartjs-tooltip';
+                        tooltipEl.classList.add('custom-tooltip');
+                        document.body.appendChild(tooltipEl);
+                    }
+
+                    // Hide if no tooltip
+                    const tooltipModel = context.tooltip;
+                    if (tooltipModel.opacity === 0) {
+                        tooltipEl.style.opacity = 0;
+                        return;
+                    }
+
+                    // Set content
+                    if (tooltipModel.body) {
+                        const titleLines = tooltipModel.title || [];
+                        const bodyLines = tooltipModel.body.map(b => b.lines);
+                        
+                        let innerHtml = '<div class="tooltip-title">';
+                        
+                        titleLines.forEach(title => {
+                            innerHtml += 'Ronde ' + title; // Vertaald naar Nederlands
+                        });
+                        innerHtml += '</div>';
+
+                        // Sort items by value
+                        const items = tooltipModel.dataPoints
+                            .map(point => ({
+                                value: point.raw,
+                                label: point.dataset.label,
+                                color: point.dataset.borderColor
+                            }))
+                            .sort((a, b) => b.value - a.value);
+                        
+                        items.forEach(item => {
+                            // Verschillende achtergronden voor de gele teams
+                            const isNACBredaTeam = item.color === "#F7FF00";  // Zwarte achtergrond
+                            const isWalburgTeam = item.color === "#FFE249";    // Witte achtergrond
+                            
+                            let bgColor = "transparent";
+                            if (isNACBredaTeam) bgColor = "black";
+                            if (isWalburgTeam) bgColor = "white";
+                            
+                            innerHtml += `<div class="tooltip-item">
+                                <div class="tooltip-team">
+                                    <div class="tooltip-color" style="background-color: ${item.color}"></div>
+                                    ${item.label}
+                                </div>
+                                <div class="tooltip-score" style="
+                                    color: ${item.color}; 
+                                    background-color: ${bgColor};
+                                    ${isWalburgTeam ? 'border: 1px solid #e2e8f0;' : ''}
+                                ">${item.value} ptn</div>
+                            </div>`;
+                        });
+                        
+                        tooltipEl.innerHTML = innerHtml;
+                    }
+
+                    // Position tooltip and set opacity
+                    const position = context.chart.canvas.getBoundingClientRect();
+                    tooltipEl.style.opacity = 1;
+                    tooltipEl.style.position = 'absolute';
+                    tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                    tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+                    tooltipEl.style.pointerEvents = 'none';
+                    tooltipEl.style.transform = 'translate(-50%, 0)';
+                }
+            };
+            
+            // Create the chart
+            const ctx = document.getElementById('teamScoreChart').getContext('2d');
             const chart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: [1, 2, 3, 4, 5, 6, 7, 8],
-                    datasets: [
-                        {
-                            label: 'You Will Never Find Brian Here',
-                            data: [12, 32, 41, 65, 84, 100, 103, 117],
-                            borderColor: '#000000',
-                            backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                            tension: 0.1,
-                            borderWidth: 3
-                        },
-                        {
-                            label: 'NAC Breda 1912',
-                            data: [9, 29, 46, 65, 79, 93, 101, 115],
-                            borderColor: '#F7FF00',
-                            backgroundColor: 'rgba(247, 255, 0, 0.1)',
-                            tension: 0.1
-                        },
-                        {
-                            label: 'Keymasters',
-                            data: [9, 30, 39, 61, 73, 90, 100, 108],
-                            borderColor: '#ED0101',
-                            backgroundColor: 'rgba(237, 1, 1, 0.1)',
-                            tension: 0.1
-                        },
-                        {
-                            label: 'Toasty Town',
-                            data: [12, 29, 38, 53, 65, 83, 94, 105],
-                            borderColor: '#12A0D7',
-                            backgroundColor: 'rgba(18, 160, 215, 0.1)',
-                            tension: 0.1
-                        },
-                        {
-                            label: 'Het Flevoslot',
-                            data: [9, 25, 39, 54, 67, 81, 89, 103],
-                            borderColor: '#EEAA00',
-                            backgroundColor: 'rgba(238, 170, 0, 0.1)',
-                            tension: 0.1
-                        },
-                        {
-                            label: 'Maid\'n Atletic',
-                            data: [8, 29, 38, 53, 70, 84, 92, 101],
-                            borderColor: '#0035C2',
-                            backgroundColor: 'rgba(0, 53, 194, 0.1)',
-                            tension: 0.1
-                        },
-                        {
-                            label: 'Walburg',
-                            data: [13, 27, 27, 27, 27, 27, 27, 27],
-                            borderColor: '#FFE249',
-                            backgroundColor: 'rgba(255, 226, 73, 0.1)',
-                            tension: 0.1
-                        }
-                    ]
+                    labels: rounds,
+                    datasets: datasets
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false, // Belangrijk om hoogte volledig te benutten
                     plugins: {
-                        title: {
-                            display: true,
-                            text: 'Team Score Progression',
-                            font: {
-                                size: 18,
-                                weight: 'bold'
-                            }
-                        },
-                        subtitle: {
-                            display: true,
-                            text: 'Cumulative points across 8 rounds',
-                            padding: {
-                                bottom: 10
-                            }
-                        },
                         legend: {
-                            position: 'bottom'
-                        }
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 8,
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: customTooltip
                     },
                     scales: {
                         x: {
                             title: {
                                 display: true,
-                                text: 'Round'
+                                text: 'Ronde', // Vertaald naar Nederlands
+                                color: '#6b7280',
+                                font: {
+                                    size: 14
+                                },
+                                padding: { top: 10 }
+                            },
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280'
                             }
                         },
                         y: {
                             title: {
                                 display: true,
-                                text: 'Cumulative Points'
+                                text: 'Cumulatieve Punten', // Vertaald naar Nederlands
+                                color: '#6b7280',
+                                font: {
+                                    size: 14
+                                },
+                                padding: { bottom: 10 }
                             },
                             min: 0,
-                            max: 120
+                            max: 120,
+                            grid: {
+                                color: '#e5e7eb'
+                            },
+                            ticks: {
+                                color: '#6b7280'
+                            }
                         }
+                    },
+                    elements: {
+                        line: {
+                            borderJoinStyle: 'round'
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
                     }
                 }
             });
+            
+            // Helper function to adjust color opacity
+            function adjustOpacity(color, opacity) {
+                // Handle hex colors
+                if (color.startsWith('#')) {
+                    const r = parseInt(color.slice(1, 3), 16);
+                    const g = parseInt(color.slice(3, 5), 16);
+                    const b = parseInt(color.slice(5, 7), 16);
+                    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+                }
+                // Handle rgba colors
+                if (color.startsWith('rgba')) {
+                    return color.replace(/rgba\((.+), [\d\.]+\)/, `rgba($1, ${opacity})`);
+                }
+                // Handle rgb colors
+                if (color.startsWith('rgb')) {
+                    return color.replace('rgb', 'rgba').replace(')', `, ${opacity})`);
+                }
+                return color;
+            }
         });
     </script>
 </body>
