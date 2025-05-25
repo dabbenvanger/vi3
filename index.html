@@ -198,7 +198,7 @@
     <div class="dashboard">
         <div class="header">
             <h1>Team Score Progressie</h1>
-            <p>Cumulatieve punten over 14 rondes</p>
+            <p>Cumulatieve punten over 4 rondes</p>
         </div>
         
         <div class="content">
@@ -207,7 +207,7 @@
             </div>
             
             <div class="leaderboard">
-                <h2>Eindstand</h2>
+                <h2>Tussenstand</h2>
                 <div id="rankings"></div>
             </div>
         </div>
@@ -227,42 +227,37 @@
             // Direct uitvoeren en bij resizing
             adjustChartSize();
             window.addEventListener('resize', adjustChartSize);
-            // Team data with scores and colors
+            // Team data with scores and colors - NIEUWE COMPETITIE
             const teamData = [
                 {
                     name: "You Will Never Find Brian Here",
                     color: "#000000",
-                    scores: [12, 32, 41, 65, 84, 100, 103, 117, 135, 151, 171, 180, 192, 199]
+                    scores: [13, 22, 36, 48]
                 },
                 {
                     name: "NAC Breda 1912",
                     color: "#F7FF00",
-                    scores: [9, 29, 46, 65, 79, 93, 101, 115, 128, 139, 160, 170, 190, 196]
+                    scores: [11, 19, 34, 40]
                 },
                 {
                     name: "Keymasters",
                     color: "#ED0101",
-                    scores: [9, 30, 39, 61, 73, 90, 100, 108, 124, 141, 156, 171, 186, 194]
+                    scores: [13, 26, 40, 52]
                 },
                 {
                     name: "Toasty Town",
                     color: "#12A0D7",
-                    scores: [12, 29, 38, 53, 65, 83, 94, 105, 116, 132, 149, 158, 169, 172]
+                    scores: [9, 17, 32, 41]
                 },
                 {
                     name: "Het Flevoslot",
                     color: "#EEAA00",
-                    scores: [9, 25, 39, 54, 67, 81, 89, 103, 123, 131, 145, 151, 163, 169]
-                },
-                {
-                    name: "Maid'n Atletic",
-                    color: "#0035C2",
-                    scores: [8, 29, 38, 53, 70, 84, 92, 101, 114, 123, 143, 152, 162, 165]
+                    scores: [6, 14, 24, 27]
                 },
                 {
                     name: "Walburg",
                     color: "#FFE249",
-                    scores: [13, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 40, 45]
+                    scores: [5, 17, 29, 38]
                 }
             ];
             
@@ -288,7 +283,7 @@
             });
             
             // Prepare chart data
-            const rounds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+            const rounds = [1, 2, 3, 4];
             const datasets = teamData.map(team => ({
                 label: team.name,
                 data: team.scores,
@@ -438,7 +433,7 @@
                                 padding: { bottom: 10 }
                             },
                             min: 0,
-                            max: 210,
+                            max: 60,
                             grid: {
                                 color: '#e5e7eb'
                             },
