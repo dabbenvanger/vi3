@@ -198,7 +198,7 @@
     <div class="dashboard">
         <div class="header">
             <h1>Team Score Progressie</h1>
-            <p>Cumulatieve punten over 4 rondes</p>
+            <p>Cumulatieve punten over 7 rondes</p>
         </div>
         
         <div class="content">
@@ -227,37 +227,37 @@
             // Direct uitvoeren en bij resizing
             adjustChartSize();
             window.addEventListener('resize', adjustChartSize);
-            // Team data with scores and colors - NIEUWE COMPETITIE
+            // Team data with scores and colors - BIJGEWERKTE COMPETITIE
             const teamData = [
                 {
                     name: "You Will Never Find Brian Here",
                     color: "#000000",
-                    scores: [13, 22, 36, 48]
+                    scores: [13, 22, 36, 48, 71, 91, 108]
                 },
                 {
                     name: "NAC Breda 1912",
                     color: "#F7FF00",
-                    scores: [11, 19, 34, 40]
+                    scores: [11, 19, 34, 40, 57, 71, 85]
                 },
                 {
                     name: "Keymasters",
                     color: "#ED0101",
-                    scores: [13, 26, 40, 52]
+                    scores: [13, 26, 40, 52, 71, 85, 99]
                 },
                 {
                     name: "Toasty Town",
                     color: "#12A0D7",
-                    scores: [9, 17, 32, 41]
+                    scores: [9, 17, 32, 41, 59, 76, 82]
                 },
                 {
                     name: "Het Flevoslot",
                     color: "#EEAA00",
-                    scores: [6, 14, 24, 27]
+                    scores: [6, 14, 24, 27, 39, 55, 70]
                 },
                 {
                     name: "Walburg",
                     color: "#FFE249",
-                    scores: [5, 17, 29, 38]
+                    scores: [5, 17, 29, 38, 53, 61, 61]
                 }
             ];
             
@@ -283,7 +283,7 @@
             });
             
             // Prepare chart data
-            const rounds = [1, 2, 3, 4];
+            const rounds = [1, 2, 3, 4, 5, 6, 7];
             const datasets = teamData.map(team => ({
                 label: team.name,
                 data: team.scores,
@@ -433,7 +433,7 @@
                                 padding: { bottom: 10 }
                             },
                             min: 0,
-                            max: 60,
+                            max: 120,
                             grid: {
                                 color: '#e5e7eb'
                             },
