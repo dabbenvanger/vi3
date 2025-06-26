@@ -290,19 +290,17 @@
             .chart-container, .leaderboard {
                 width: 100%;
                 min-width: 0;
+                margin: 10px;
             }
             .chart-container {
-                height: 90vh;
-                min-height: 90vh;
+                height: 70vh;
+                min-height: 70vh;
                 padding: 20px;
-                margin: 10px;
             }
             .leaderboard {
                 height: 100vh;
                 min-height: 100vh;
                 padding: 20px;
-                margin-left: 10px;
-                margin-right: 10px;
             }
             .header h1 {
                 font-size: 1.8rem;
@@ -328,6 +326,7 @@
             }
             .chart-container, .leaderboard {
                 padding: 15px;
+                margin: 10px;
             }
             .header {
                 padding: 10px 10px 8px;
@@ -339,15 +338,12 @@
                 font-size: 0.8rem;
             }
             .chart-container {
-                height: 80vh;
-                min-height: 80vh;
-                margin: 10px;
+                height: 70vh;
+                min-height: 70vh;
             }
             .leaderboard {
-                height: 80vh;
-                min-height: 80vh;
-                margin-left: 10px;
-                margin-right: 10px;
+                height: 100vh;
+                min-height: 100vh;
             }
             .team-item {
                 padding: 8px 4px;
@@ -495,8 +491,8 @@
                             }
                         },
                         tooltip: {
-                            enabled: false,
-                            external: function(context) {
+                            enabled: window.innerWidth > 1000,
+                            external: window.innerWidth > 1000 ? function(context) {
                                 const tooltip = context.tooltip;
                                 let tooltipEl = document.getElementById('chartjs-tooltip');
 
@@ -566,7 +562,7 @@
                                 tooltipEl.style.padding = '0';
                                 tooltipEl.style.pointerEvents = 'none';
                                 tooltipEl.style.zIndex = '1000';
-                            }
+                            } : undefined
                         }
                     },
                     scales: {
