@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+.header {
+            text-align: center;<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -18,7 +19,7 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #FBFAF3;
             min-height: 100vh;
             color: #1a202c;
         }
@@ -33,7 +34,7 @@
         .header {
             text-align: center;
             margin-bottom: 40px;
-            color: white;
+            color: #1a202c;
             padding: 40px 20px;
         }
         
@@ -41,7 +42,7 @@
             font-size: 3.5rem;
             font-weight: 700;
             margin-bottom: 16px;
-            background: linear-gradient(135deg, #ffffff 0%, #f7fafc 100%);
+            background: linear-gradient(135deg, #1a202c 0%, #4a5568 100%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -51,8 +52,9 @@
         .header p {
             font-size: 1.3rem;
             font-weight: 400;
-            opacity: 0.9;
+            opacity: 0.7;
             letter-spacing: 0.5px;
+            color: #4a5568;
         }
         
         .content {
@@ -94,8 +96,9 @@
                 0 25px 50px rgba(0, 0, 0, 0.15),
                 0 0 0 1px rgba(255, 255, 255, 0.2);
             padding: 32px;
-            max-height: 600px;
-            overflow-y: auto;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
             position: relative;
         }
         
@@ -119,23 +122,52 @@
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            flex-shrink: 0;
+        }
+        
+        .rankings-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+        
+        .rankings-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .rankings-container::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 3px;
+        }
+        
+        .rankings-container::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+        
+        .rankings-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
         }
         
         .team-item {
             display: flex;
             align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
-            transition: all 0.3s ease;
+            padding: 16px 12px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 12px;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             position: relative;
         }
         
         .team-item:hover {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+            background: rgba(79, 70, 229, 0.04);
+            transform: translateX(2px);
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08);
+        }
+        
+        .team-item:last-child {
+            border-bottom: none;
         }
         
         .rank {
@@ -258,6 +290,7 @@
         @media (max-width: 1000px) {
             .content {
                 flex-direction: column;
+                gap: 20px;
             }
             .chart-container, .leaderboard {
                 width: 100%;
@@ -266,6 +299,10 @@
             .chart-container {
                 height: 70vh !important;
                 min-height: 650px !important;
+            }
+            .leaderboard {
+                height: auto;
+                max-height: 500px;
             }
             .header h1 {
                 font-size: 2.5rem;
@@ -332,7 +369,9 @@
             
             <div class="leaderboard">
                 <h2>Tussenstand</h2>
-                <div id="rankings"></div>
+                <div class="rankings-container">
+                    <div id="rankings"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -389,9 +428,12 @@
                 }
             ];
 
-            // Prepare chart data
+            // Prepare chart data - GESORTEERD OP STAND
+            const lastRound = teamData[0].scores.length - 1;
+            const sortedTeamData = [...teamData].sort((a, b) => b.scores[lastRound] - a.scores[lastRound]);
+            
             const rounds = [1, 2, 3, 4, 5, 6, 7, 8];
-            const datasets = teamData.map(team => ({
+            const datasets = sortedTeamData.map(team => ({
                 label: team.name,
                 data: team.scores,
                 borderColor: team.color,
