@@ -76,14 +76,6 @@
             min-height: 350px;
         }
         
-        .chart-container::before {
-            display: none;
-        }
-        
-        .leaderboard::before {
-            display: none;
-        }
-        
         .leaderboard {
             flex: 1;
             background: white;
@@ -95,16 +87,6 @@
             flex-direction: column;
             position: relative;
             min-height: 350px;
-        }
-        
-        .leaderboard::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
         }
         
         .leaderboard h2 {
@@ -473,69 +455,12 @@
 
             // Create chart
             const ctx = document.getElementById('teamScoreChart').getContext('2d');
-            
-            // Plugin om score labels te tonen bij hover
-            const hoverLabelsPlugin = {
-                id: 'hoverLabels',
-                afterDraw: function(chart) {
-                    if (chart.tooltip._active && chart.tooltip._active.length) {
-                        const activePoint = chart.tooltip._active[0];
-                        const roundIndex = activePoint.index;
-                        const ctx = chart.ctx;
-                        
-                        // Toon labels voor alle teams in deze ronde
-                        chart.data.datasets.forEach((dataset, datasetIndex) => {
-                            const meta = chart.getDatasetMeta(datasetIndex);
-                            const point = meta.data[roundIndex];
-                            const value = dataset.data[roundIndex];
-                            
-                            if (point && value !== undefined) {
-                                ctx.save();
-                                ctx.textAlign = 'center';
-                                ctx.textBaseline = 'bottom';
-                                ctx.fillStyle = dataset.borderColor;
-                                ctx.font = 'bold 14px Inter';
-                                
-                                // Witte achtergrond voor betere leesbaarheid
-                                const text = value.toString();
-                                const textWidth = ctx.measureText(text).width;
-                                const padding = 6;
-                                
-                                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-                                ctx.fillRect(
-                                    point.x - (textWidth / 2) - padding,
-                                    point.y - 25 - padding,
-                                    textWidth + (padding * 2),
-                                    20 + (padding * 2)
-                                );
-                                
-                                // Dunne border
-                                ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
-                                ctx.lineWidth = 1;
-                                ctx.strokeRect(
-                                    point.x - (textWidth / 2) - padding,
-                                    point.y - 25 - padding,
-                                    textWidth + (padding * 2),
-                                    20 + (padding * 2)
-                                );
-                                
-                                // Score tekst
-                                ctx.fillStyle = dataset.borderColor;
-                                ctx.fillText(text, point.x, point.y - 10);
-                                ctx.restore();
-                            }
-                        });
-                    }
-                }
-            };
-            
             new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: rounds,
                     datasets: datasets
                 },
-                plugins: [hoverLabelsPlugin],
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -554,11 +479,81 @@
                             }
                         },
                         tooltip: {
-                            enabled: false
-                        },
-                        hover: {
-                            mode: 'index',
-                            intersect: false
+                            enabled: false,
+                            external: window.innerWidth > 1000 ? function(context) {
+                                const tooltip = context.tooltip;
+                                let tooltipEl = document.getElementById('chartjs-tooltip');
+
+                                if (!tooltipEl) {
+                                    tooltipEl = document.createElement('div');
+                                    tooltipEl.id = 'chartjs-tooltip';
+                                    tooltipEl.innerHTML = '<div></div>';
+                                    document.body.appendChild(tooltipEl);
+                                }
+
+                                if (tooltip.opacity === 0) {
+                                    tooltipEl.style.opacity = 0;
+                                    return;
+                                }
+
+                                if (tooltip.body) {
+                                    const titleLines = tooltip.title || [];
+                                    const bodyLines = tooltip.body.map(b => b.lines);
+
+                                    let innerHtml = '<div class="custom-tooltip">';
+                                    
+                                    titleLines.forEach(function(title) {
+                                        innerHtml += '<div class="tooltip-title">Ronde ' + title + '</div>';
+                                    });
+
+                                    const items = tooltip.dataPoints.map(point => ({
+                                        label: point.dataset.label,
+                                        value: point.parsed.y,
+                                        color: point.dataset.borderColor
+                                    }));
+
+                                    items.sort((a, b) => b.value - a.value);
+
+                                    items.forEach(item => {
+                                        const isNACBredaTeam = item.color === "#F7FF00";
+                                        const isWalburgTeam = item.color === "#FFE249";
+                                        
+                                        let bgColor = "transparent";
+                                        if (isNACBredaTeam) bgColor = "black";
+                                        if (isWalburgTeam) bgColor = "white";
+                                        
+                                        innerHtml += `<div class="tooltip-item">
+                                            <div class="tooltip-team">
+                                                <div class="tooltip-color" style="background-color: ${item.color}"></div>
+                                                ${item.label}
+                                            </div>
+                                            <div class="tooltip-score" style="
+                                                color: ${item.color}; 
+                                                background-color: ${bgColor};
+                                                ${isWalburgTeam ? 'border: 1px solid #e2e8f0;' : ''}
+                                            ">${item.value} ptn</div>
+                                        </div>`;
+                                    });
+
+                                    innerHtml += '</div>';
+                                    tooltipEl.innerHTML = innerHtml;
+                                }
+
+                                const position = context.chart.canvas.getBoundingClientRect();
+                                
+                                // Eenvoudige oplossing: tooltip altijd boven de cursor plaatsen
+                                let tooltipX = position.left + window.pageXOffset + tooltip.caretX;
+                                let tooltipY = position.top + window.pageYOffset + tooltip.caretY - 200; // 200px boven cursor
+
+                                tooltipEl.style.opacity = 1;
+                                tooltipEl.style.position = 'absolute';
+                                tooltipEl.style.left = tooltipX + 'px';
+                                tooltipEl.style.top = tooltipY + 'px';
+                                tooltipEl.style.font = Chart.helpers.toFont(tooltip.options.bodyFont).string;
+                                tooltipEl.style.padding = '0';
+                                tooltipEl.style.pointerEvents = 'none';
+                                tooltipEl.style.zIndex = '1000';
+                            } : undefined
                         }
                     },
                     scales: {
@@ -575,9 +570,18 @@
                             }
                         },
                         y: {
-                            display: false,
                             min: 0,
-                            max: 130
+                            max: 130,
+                            grid: {
+                                color: 'rgba(156, 163, 175, 0.2)'
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
                         }
                     },
                     interaction: {
