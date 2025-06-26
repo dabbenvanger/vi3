@@ -286,15 +286,16 @@
             .content {
                 flex-direction: column;
                 gap: 20px;
+                padding: 0 10px;
             }
             .chart-container, .leaderboard {
-                width: 100%;
+                width: calc(100% - 20px);
                 min-width: 0;
-                margin: 10px;
+                margin: 0 auto;
             }
             .chart-container {
-                height: 70vh;
-                min-height: 70vh;
+                height: 80vh;
+                min-height: 80vh;
                 padding: 20px;
             }
             .leaderboard {
@@ -324,9 +325,13 @@
                 height: auto;
                 overflow: visible;
             }
+            .content {
+                padding: 0 10px;
+            }
             .chart-container, .leaderboard {
                 padding: 15px;
-                margin: 10px;
+                width: calc(100% - 20px);
+                margin: 0 auto;
             }
             .header {
                 padding: 10px 10px 8px;
@@ -338,8 +343,8 @@
                 font-size: 0.8rem;
             }
             .chart-container {
-                height: 70vh;
-                min-height: 70vh;
+                height: 80vh;
+                min-height: 80vh;
             }
             .leaderboard {
                 height: 100vh;
