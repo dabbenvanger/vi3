@@ -1,5 +1,4 @@
-.header {
-            text-align: center;<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -90,12 +89,12 @@
             background: white;
             border-radius: 20px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            height: calc(100vh - 160px);
+            padding: 18px;
+            height: calc(100vh - 180px);
             display: flex;
             flex-direction: column;
             position: relative;
-            min-height: 400px;
+            min-height: 350px;
         }
         
         .leaderboard::before {
@@ -286,20 +285,21 @@
         @media (max-width: 1000px) {
             .content {
                 flex-direction: column;
-                gap: 15px;
+                gap: 20px;
             }
             .chart-container, .leaderboard {
                 width: 100%;
                 min-width: 0;
-                height: auto;
             }
             .chart-container {
-                height: 50vh;
-                min-height: 350px;
+                height: 100vh;
+                min-height: 100vh;
+                padding: 20px;
             }
             .leaderboard {
-                height: auto;
-                max-height: 300px;
+                height: 100vh;
+                min-height: 100vh;
+                padding: 20px;
             }
             .header h1 {
                 font-size: 1.8rem;
@@ -308,27 +308,40 @@
                 font-size: 0.9rem;
             }
             .dashboard {
-                padding: 8px;
+                padding: 0;
                 height: auto;
+                overflow: visible;
+            }
+            .header {
+                padding: 15px 15px 10px;
             }
         }
         
         @media (max-width: 600px) {
             .dashboard {
-                padding: 5px;
+                padding: 0;
                 height: auto;
+                overflow: visible;
             }
             .chart-container, .leaderboard {
                 padding: 15px;
             }
             .header {
-                padding: 15px 10px 10px;
+                padding: 10px 10px 8px;
             }
             .header h1 {
                 font-size: 1.5rem;
             }
             .header p {
                 font-size: 0.8rem;
+            }
+            .chart-container {
+                height: 100vh;
+                min-height: 100vh;
+            }
+            .leaderboard {
+                height: 100vh;
+                min-height: 100vh;
             }
             .team-item {
                 padding: 8px 4px;
@@ -583,7 +596,7 @@
                                 color: '#374151'
                             },
                             min: 0,
-                            max: 110,
+                            max: 130,
                             grid: {
                                 color: 'rgba(156, 163, 175, 0.2)'
                             },
