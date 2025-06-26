@@ -560,10 +560,39 @@
                                 const position = context.chart.canvas.getBoundingClientRect();
                                 const bodyFont = Chart.helpers.toFont(tooltip.options.bodyFont);
 
+                                // Bereken tooltip positie en voorkom dat deze buiten het scherm valt
+                                let tooltipX = position.left + window.pageXOffset + tooltip.caretX;
+                                let tooltipY = position.top + window.pageYOffset + tooltip.caretY;
+                                
+                                // Schat tooltip hoogte (aantal teams * 35px + header + padding)
+                                const estimatedTooltipHeight = (items.length * 35) + 80;
+                                const viewportHeight = window.innerHeight;
+                                
+                                // Als tooltip buiten onderkant viewport zou vallen, plaats dan boven cursor
+                                if (tooltipY + estimatedTooltipHeight > viewportHeight + window.pageYOffset) {
+                                    tooltipY = tooltipY - estimatedTooltipHeight - 20; // 20px extra ruimte
+                                }
+                                
+                                // Voorkom dat tooltip buiten bovenkant valt
+                                if (tooltipY < window.pageYOffset) {
+                                    tooltipY = window.pageYOffset + 10;
+                                }
+                                
+                                // Voorkom dat tooltip buiten rechterkant valt
+                                const estimatedTooltipWidth = 300; // Schatting tooltip breedte
+                                if (tooltipX + estimatedTooltipWidth > window.innerWidth + window.pageXOffset) {
+                                    tooltipX = tooltipX - estimatedTooltipWidth - 20;
+                                }
+                                
+                                // Voorkom dat tooltip buiten linkerkant valt
+                                if (tooltipX < window.pageXOffset) {
+                                    tooltipX = window.pageXOffset + 10;
+                                }
+
                                 tooltipEl.style.opacity = 1;
                                 tooltipEl.style.position = 'absolute';
-                                tooltipEl.style.left = position.left + window.pageXOffset + tooltip.caretX + 'px';
-                                tooltipEl.style.top = position.top + window.pageYOffset + tooltip.caretY + 'px';
+                                tooltipEl.style.left = tooltipX + 'px';
+                                tooltipEl.style.top = tooltipY + 'px';
                                 tooltipEl.style.font = bodyFont.string;
                                 tooltipEl.style.padding = '0';
                                 tooltipEl.style.pointerEvents = 'none';
