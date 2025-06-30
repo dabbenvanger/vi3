@@ -348,7 +348,7 @@
     <div class="dashboard">
         <div class="header">
             <h1>Toto Seizoen 80 - VI.3</h1>
-            <p>Cumulatieve punten over 8 rondes</p>
+            <p>Cumulatieve punten over 9 rondes</p>
         </div>
         
         <div class="content">
@@ -369,9 +369,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Zorgen dat de grafiek goed schaalt op mobiel
             function adjustChartSize() {
-                const chartContainer = document.getElementById('chartContainer');
                 if (window.innerWidth <= 1000) {
-                    chartContainer.style.height = Math.max(650, window.innerHeight * 0.7) + 'px';
+                    document.getElementById('chartContainer').style.height = Math.max(650, window.innerHeight * 0.7) + 'px';
                 }
             }
             
@@ -383,37 +382,37 @@
                 {
                     name: "You Will Never Find Brian Here",
                     color: "#000000",
-                    scores: [13, 22, 36, 48, 71, 91, 108, 122]
+                    scores: [13, 22, 36, 48, 71, 91, 108, 122, 136]
                 },
                 {
                     name: "NAC Breda 1912",
                     color: "#F7FF00",
-                    scores: [11, 19, 34, 40, 57, 71, 85, 102]
+                    scores: [11, 19, 34, 40, 57, 71, 85, 102, 116]
                 },
                 {
                     name: "Keymasters",
                     color: "#ED0101",
-                    scores: [13, 26, 40, 52, 71, 85, 99, 111]
+                    scores: [13, 26, 40, 52, 71, 85, 99, 111, 125]
                 },
                 {
                     name: "Toasty Town",
                     color: "#12A0D7",
-                    scores: [9, 17, 32, 41, 59, 76, 82, 96]
+                    scores: [9, 17, 32, 41, 59, 76, 82, 96, 111]
                 },
                 {
                     name: "Het Flevoslot",
                     color: "#EEAA00",
-                    scores: [6, 14, 24, 27, 39, 55, 70, 84]
+                    scores: [6, 14, 24, 27, 39, 55, 70, 84, 97]
                 },
                 {
                     name: "Maid'n Atletic",
                     color: "#0035C2",
-                    scores: [0, 0, 0, 0, 0, 0, 0, 14]
+                    scores: [0, 0, 0, 0, 0, 0, 0, 14, 26]
                 },
                 {
                     name: "Walburg",
                     color: "#FFE249",
-                    scores: [5, 17, 29, 38, 53, 61, 61, 61]
+                    scores: [5, 17, 29, 38, 53, 61, 61, 61, 61]
                 }
             ];
 
@@ -421,7 +420,7 @@
             const lastRound = teamData[0].scores.length - 1;
             const sortedTeamData = [...teamData].sort((a, b) => b.scores[lastRound] - a.scores[lastRound]);
             
-            const rounds = [1, 2, 3, 4, 5, 6, 7, 8];
+            const rounds = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             const datasets = sortedTeamData.map(team => ({
                 label: team.name,
                 data: team.scores,
@@ -485,7 +484,6 @@
 
                                 if (tooltip.body) {
                                     const titleLines = tooltip.title || [];
-                                    const bodyLines = tooltip.body.map(b => b.lines);
 
                                     let innerHtml = '<div class="custom-tooltip">';
                                     
