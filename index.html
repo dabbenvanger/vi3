@@ -92,13 +92,22 @@
         .leaderboard h2 {
             font-size: 1.4rem;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 4px;
             color: #2d3748;
             text-align: center;
             background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            flex-shrink: 0;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            font-weight: 400;
+            margin-bottom: 16px;
+            color: #6b7280;
+            text-align: center;
             flex-shrink: 0;
         }
         
@@ -358,6 +367,7 @@
             
             <div class="leaderboard">
                 <h2>Tussenstand</h2>
+                <p class="subtitle">na 10 rondes</p>
                 <div class="rankings-container">
                     <div id="rankings"></div>
                 </div>
@@ -377,7 +387,7 @@
             adjustChartSize();
             window.addEventListener('resize', adjustChartSize);
 
-            // Team data with scores and colors - BIJGEWERKTE COMPETITIE
+            // Team data with scores and colors - BIJGEWERKT NAAR RONDE 10
             const teamData = [
                 {
                     name: "You Will Never Find Brian Here",
@@ -385,14 +395,14 @@
                     scores: [13, 22, 36, 48, 71, 91, 108, 122, 136, 154]
                 },
                 {
-                    name: "NAC Breda 1912",
-                    color: "#F7FF00",
-                    scores: [11, 19, 34, 40, 57, 71, 85, 102, 116, 133]
-                },
-                {
                     name: "Keymasters",
                     color: "#ED0101",
                     scores: [13, 26, 40, 52, 71, 85, 99, 111, 125, 142]
+                },
+                {
+                    name: "NAC Breda 1912",
+                    color: "#F7FF00",
+                    scores: [11, 19, 34, 40, 57, 71, 85, 102, 116, 133]
                 },
                 {
                     name: "Toasty Town",
@@ -405,14 +415,14 @@
                     scores: [6, 14, 24, 27, 39, 55, 70, 84, 97, 115]
                 },
                 {
-                    name: "Maid'n Atletic",
-                    color: "#0035C2",
-                    scores: [0, 0, 0, 0, 0, 0, 0, 14, 26, 41]
-                },
-                {
                     name: "Walburg",
                     color: "#FFE249",
                     scores: [5, 17, 29, 38, 53, 61, 61, 61, 61, 61]
+                },
+                {
+                    name: "Maid'n Atletic",
+                    color: "#0035C2",
+                    scores: [0, 0, 0, 0, 0, 0, 0, 14, 26, 41]
                 }
             ];
 
@@ -556,7 +566,7 @@
                         },
                         y: {
                             min: 0,
-                            max: 160,
+                            max: 170,
                             grid: {
                                 color: 'rgba(156, 163, 175, 0.2)'
                             },
@@ -587,6 +597,11 @@
             // Generate leaderboard
             function generateLeaderboard() {
                 const lastRound = teamData[0].scores.length - 1;
+                const totalRounds = teamData[0].scores.length;
+                
+                // Update subtitle with current round count
+                document.querySelector('.subtitle').textContent = `na ${totalRounds} rondes`;
+                
                 const standings = teamData.map(team => ({
                     name: team.name,
                     color: team.color,
