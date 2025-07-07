@@ -89,26 +89,33 @@
             min-height: 350px;
         }
         
-        .leaderboard h2 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: #2d3748;
+        .leaderboard-header {
             text-align: center;
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            margin-bottom: 20px;
+            flex-shrink: 0;
+            position: relative;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(39, 127, 49, 0.15);
+        }
+        
+        .leaderboard h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            flex-shrink: 0;
+            letter-spacing: -0.02em;
         }
         
         .subtitle {
-            font-size: 0.9rem;
-            font-weight: 400;
-            margin-bottom: 16px;
-            color: #6b7280;
-            text-align: center;
-            flex-shrink: 0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #277f31;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0;
         }
         
         .rankings-container {
@@ -366,8 +373,10 @@
             </div>
             
             <div class="leaderboard">
-                <h2>Tussenstand</h2>
-                <p class="subtitle">na 10 rondes</p>
+                <div class="leaderboard-header">
+                    <h2>Tussenstand</h2>
+                    <p class="subtitle">na 10 rondes</p>
+                </div>
                 <div class="rankings-container">
                     <div id="rankings"></div>
                 </div>
