@@ -564,9 +564,9 @@
 
                                 const position = context.chart.canvas.getBoundingClientRect();
                                 
-                                // Eenvoudige oplossing: tooltip altijd boven de cursor plaatsen
-                                let tooltipX = position.left + window.pageXOffset + tooltip.caretX;
-                                let tooltipY = position.top + window.pageYOffset + tooltip.caretY - 200; // 200px boven cursor
+                                // Eenvoudige oplossing: tooltip rechts van de cursor plaatsen
+                                let tooltipX = position.left + window.pageXOffset + tooltip.caretX + 20;
+                                let tooltipY = position.top + window.pageYOffset + tooltip.caretY - 100;
 
                                 tooltipEl.style.opacity = 1;
                                 tooltipEl.style.position = 'absolute';
