@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toto Seizoen 80 - VI.3</title>
+    <title>Toto Seizoen 81 - VI.3</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -363,8 +363,8 @@
 <body>
     <div class="dashboard">
         <div class="header">
-            <h1>Toto Seizoen 80 - VI.3</h1>
-            <p>Cumulatieve punten over 14 rondes</p>
+            <h1>Toto Seizoen 81 - VI.3</h1>
+            <p>Cumulatieve punten over 2 rondes</p>
         </div>
         
         <div class="content">
@@ -374,7 +374,7 @@
             
             <div class="leaderboard">
                 <div class="leaderboard-header">
-                    <h2>Eindstand</h2>
+                    <h2>Tussenstand</h2>
                     <p class="subtitle">na 10 rondes</p>
                 </div>
                 <div class="rankings-container">
@@ -396,42 +396,47 @@
             adjustChartSize();
             window.addEventListener('resize', adjustChartSize);
 
-            // Team data with scores and colors - FINALE RONDE 14
+            // Team data with scores and colors - SEIZOEN 81 RONDE 2
             const teamData = [
                 {
                     name: "You Will Never Find Brian Here",
                     color: "#000000",
-                    scores: [13, 22, 36, 48, 71, 91, 108, 122, 136, 154, 166, 179, 193, 206]
-                },
-                {
-                    name: "NAC Breda 1912",
-                    color: "#F7FF00",
-                    scores: [11, 19, 34, 40, 57, 71, 85, 102, 116, 133, 147, 159, 176, 189]
-                },
-                {
-                    name: "Keymasters",
-                    color: "#ED0101",
-                    scores: [13, 26, 40, 52, 71, 85, 99, 111, 125, 142, 150, 163, 175, 188]
-                },
-                {
-                    name: "Toasty Town",
-                    color: "#12A0D7",
-                    scores: [9, 17, 32, 41, 59, 76, 82, 96, 111, 123, 134, 147, 161, 180]
+                    scores: [20, 38]
                 },
                 {
                     name: "Het Flevoslot",
                     color: "#EEAA00",
-                    scores: [6, 14, 24, 27, 39, 55, 70, 84, 97, 115, 128, 139, 151, 168]
+                    scores: [21, 30]
                 },
                 {
-                    name: "Maid'n Atletic",
-                    color: "#0035C2",
-                    scores: [0, 0, 0, 0, 0, 0, 0, 14, 26, 41, 54, 67, 82, 91]
+                    name: "Toasty Town",
+                    color: "#12A0D7",
+                    scores: [15, 29]
+                },
+                {
+                    name: "Keymasters",
+                    color: "#ED0101",
+                    scores: [9, 26]
+                },
+                {
+                    name: "Rode Ster Nijmegen",
+                    color: "#92042F",
+                    scores: [17, 23]
                 },
                 {
                     name: "Walburg",
                     color: "#FFE249",
-                    scores: [5, 17, 29, 38, 53, 61, 61, 61, 61, 61, 61, 61, 61, 61]
+                    scores: [12, 23]
+                },
+                {
+                    name: "Maid'n Atletic",
+                    color: "#0035C2",
+                    scores: [0, 18]
+                },
+                {
+                    name: "NAC Breda 1912",
+                    color: "#F7FF00",
+                    scores: [0, 14]
                 }
             ];
 
@@ -439,7 +444,7 @@
             const lastRound = teamData[0].scores.length - 1;
             const sortedTeamData = [...teamData].sort((a, b) => b.scores[lastRound] - a.scores[lastRound]);
             
-            const rounds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+            const rounds = [1, 2];
             const datasets = sortedTeamData.map(team => ({
                 label: team.name,
                 data: team.scores,
@@ -575,7 +580,7 @@
                         },
                         y: {
                             min: 0,
-                            max: 220,
+                            max: 45,
                             grid: {
                                 color: 'rgba(156, 163, 175, 0.2)'
                             },
