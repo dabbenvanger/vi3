@@ -253,12 +253,12 @@
         }
         
         .tooltip-color {
-            width: 12px;
-            height: 12px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             margin-right: 10px;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
         
         .tooltip-score {
@@ -269,6 +269,7 @@
             border-radius: 12px;
             background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
             border: 1px solid rgba(209, 213, 219, 0.3);
+            color: #1f2937;
         }
         
         @media (max-width: 1000px) {
@@ -544,11 +545,7 @@
                                                 <div class="tooltip-color" style="background-color: ${item.color}"></div>
                                                 ${item.label}
                                             </div>
-                                            <div class="tooltip-score" style="
-                                                color: ${item.color}; 
-                                                background-color: ${bgColor};
-                                                ${isWalburgTeam ? 'border: 1px solid #e2e8f0;' : ''}
-                                            ">${item.value} ptn</div>
+                                            <div class="tooltip-score">${item.value} ptn</div>
                                         </div>`;
                                     });
 
