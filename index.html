@@ -361,7 +361,7 @@
     <div class="dashboard">
         <div class="header">
             <h1>Toto Seizoen 81 - VI.3</h1>
-            <p>Cumulatieve punten over 2 rondes</p>
+            <p>Cumulatieve punten over 3 rondes</p>
         </div>
         
         <div class="content">
@@ -372,7 +372,7 @@
             <div class="leaderboard">
                 <div class="leaderboard-header">
                     <h2>Tussenstand</h2>
-                    <p class="subtitle">na 10 rondes</p>
+                    <p class="subtitle">na 3 rondes</p>
                 </div>
                 <div class="rankings-container">
                     <div id="rankings"></div>
@@ -393,47 +393,47 @@
             adjustChartSize();
             window.addEventListener('resize', adjustChartSize);
 
-            // Team data with scores and colors - SEIZOEN 81 RONDE 2
+            // Team data with scores and colors - SEIZOEN 81 RONDE 3
             const teamData = [
                 {
                     name: "You Will Never Find Brian Here",
                     color: "#000000",
-                    scores: [20, 38]
+                    scores: [20, 38, 49]
                 },
                 {
                     name: "Het Flevoslot",
                     color: "#EEAA00",
-                    scores: [21, 30]
+                    scores: [21, 30, 43]
                 },
                 {
                     name: "Toasty Town",
                     color: "#12A0D7",
-                    scores: [15, 29]
+                    scores: [15, 29, 43]
                 },
                 {
                     name: "Keymasters",
                     color: "#ED0101",
-                    scores: [9, 26]
+                    scores: [9, 26, 37]
                 },
                 {
                     name: "Rode Ster Nijmegen",
                     color: "#92042F",
-                    scores: [17, 23]
-                },
-                {
-                    name: "Walburg",
-                    color: "#FFE249",
-                    scores: [12, 23]
-                },
-                {
-                    name: "Maid'n Atletic",
-                    color: "#0035C2",
-                    scores: [0, 18]
+                    scores: [17, 23, 34]
                 },
                 {
                     name: "NAC Breda 1912",
                     color: "#F7FF00",
-                    scores: [0, 14]
+                    scores: [0, 14, 26]
+                },
+                {
+                    name: "Maid'n Atletic",
+                    color: "#0035C2",
+                    scores: [0, 18, 24]
+                },
+                {
+                    name: "Walburg",
+                    color: "#FFE249",
+                    scores: [12, 23, 23]
                 }
             ];
 
@@ -441,7 +441,7 @@
             const lastRound = teamData[0].scores.length - 1;
             const sortedTeamData = [...teamData].sort((a, b) => b.scores[lastRound] - a.scores[lastRound]);
             
-            const rounds = [1, 2];
+            const rounds = [1, 2, 3];
             // Helper functie om lichtere kleur te maken
             function lightenColor(hex) {
                 // Convert hex to RGB
@@ -595,7 +595,7 @@
                         },
                         y: {
                             min: 0,
-                            max: 45,
+                            max: 55,
                             grid: {
                                 color: 'rgba(156, 163, 175, 0.2)'
                             },
