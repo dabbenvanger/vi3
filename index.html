@@ -361,7 +361,7 @@
     <div class="dashboard">
         <div class="header">
             <h1>Toto Seizoen 81 - VI.3</h1>
-            <p>Cumulatieve punten over 12 rondes</p>
+            <p>Cumulatieve punten over 13 rondes</p>
         </div>
         
         <div class="content">
@@ -372,7 +372,7 @@
             <div class="leaderboard">
                 <div class="leaderboard-header">
                     <h2>Tussenstand</h2>
-                    <p class="subtitle">na 12 rondes</p>
+                    <p class="subtitle">na 13 rondes</p>
                 </div>
                 <div class="rankings-container">
                     <div id="rankings"></div>
@@ -393,47 +393,47 @@
             adjustChartSize();
             window.addEventListener('resize', adjustChartSize);
 
-            // Team data with scores and colors - SEIZOEN 81 RONDE 12
+            // Team data with scores and colors - SEIZOEN 81 RONDE 13
             const teamData = [
                 {
                     name: "Het Flevoslot",
                     color: "#EEAA00",
-                    scores: [21, 30, 43, 54, 65, 82, 104, 115, 139, 151, 157, 169]
+                    scores: [21, 30, 43, 54, 65, 82, 104, 115, 139, 151, 157, 169, 172]
                 },
                 {
                     name: "You Will Never Find Brian Here",
                     color: "#000000",
-                    scores: [20, 38, 49, 65, 75, 87, 104, 115, 136, 148, 154, 167]
+                    scores: [20, 38, 49, 65, 75, 87, 104, 115, 136, 148, 154, 167, 170]
                 },
                 {
                     name: "Toasty Town",
                     color: "#12A0D7",
-                    scores: [15, 29, 43, 57, 66, 80, 97, 110, 129, 138, 147, 165]
+                    scores: [15, 29, 43, 57, 66, 80, 97, 110, 129, 138, 147, 165, 168]
                 },
                 {
                     name: "Keymasters",
                     color: "#ED0101",
-                    scores: [9, 26, 37, 51, 64, 76, 91, 107, 123, 135, 142, 155]
+                    scores: [9, 26, 37, 51, 64, 76, 91, 107, 123, 135, 142, 155, 167]
                 },
                 {
                     name: "NAC Breda 1912",
                     color: "#F7FF00",
-                    scores: [0, 14, 26, 42, 50, 62, 85, 99, 119, 131, 141, 153]
+                    scores: [0, 14, 26, 42, 50, 62, 85, 99, 119, 131, 141, 153, 156]
                 },
                 {
                     name: "Maid'n Atletic",
                     color: "#0035C2",
-                    scores: [0, 18, 24, 35, 41, 55, 75, 90, 106, 123, 129, 138]
+                    scores: [0, 18, 24, 35, 41, 55, 75, 90, 106, 123, 129, 138, 141]
                 },
                 {
                     name: "Rode Ster Nijmegen",
                     color: "#92042F",
-                    scores: [17, 23, 34, 48, 54, 63, 72, 75, 92, 106, 112, 121]
+                    scores: [17, 23, 34, 48, 54, 63, 72, 75, 92, 106, 112, 121, 136]
                 },
                 {
                     name: "Walburg",
                     color: "#FFE249",
-                    scores: [12, 23, 23, 23, 26, 26, 26, 26, 26, 26, 26, 26]
+                    scores: [12, 23, 23, 23, 26, 26, 26, 26, 26, 26, 26, 26, 26]
                 }
             ];
 
@@ -458,7 +458,7 @@
             const lastRound = teamData[0].scores.length - 1;
             const sortedTeamData = [...teamData].sort((a, b) => b.scores[lastRound] - a.scores[lastRound]);
             
-            const rounds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            const rounds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
             const datasets = sortedTeamData.map(team => ({
                 label: team.name,
                 data: team.scores,
